@@ -6,4 +6,10 @@ export const twitterUseCase = {
 
     return trends;
   },
+
+  fetchTweet: async () => {
+    const tweet = await twitterRepository.fetchTweet();
+
+    return tweet;
+  },
 };

@@ -18,3 +18,8 @@ export type TrendModel = {
   isHashtag: boolean;
   word: string;
 };
+
+export type TweetModel = {
+  isHashtag: boolean;
+  content: string;
+};

@@ -1,4 +1,4 @@
-import type { TrendModel } from '$/commonTypesWithClient/models';
+import type { TrendModel, TweetModel } from '$/commonTypesWithClient/models';
 import { TWITTER_PASSWORD, TWITTER_USERNAME } from '$/service/envValues';
 import type { Browser, BrowserContext, Page } from 'playwright';
 import { chromium } from 'playwright';
@@ -42,5 +42,22 @@ export const twitterRepository = {
       .then((trends) =>
         trends.map((t): TrendModel => ({ isHashtag: t.startsWith('#'), word: t.replace('#', '') }))
       );
+  },
+
+  fetchTweet: async (): Promise<TweetModel[]> => {
+    const page = await getLoggedInPage();
+
+    await page.goto(`${origin}/home`);
+
+    const tweetTextBox = await page.getByRole('textbox', { name: 'Tweet text' });
+    await tweetTextBox.click();
+
+    const contents = 'aaa';
+
+    await tweetTextBox.fill(contents);
+
+    await page.getByTestId('tweetButtonInline').click();
+
+    return [{ isHashtag: false, content: contents }];
   },
 };
