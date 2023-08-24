@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { apiClient } from 'src/utils/apiClient';
 import { returnNull } from 'src/utils/returnNull';
 import styles from './index.module.css';
 interface ChatWindowProps {
   messages: string[];
-  // messages: TrendModel;
   name: string;
 }
 
@@ -38,55 +37,78 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, name }) => {
   );
 };
 const LangChain = () => {
-  // 3つの異なるメッセージリスト
-  // const messagesList1 = ['FXを買いました。', 'FXを売りました。', 'FXを買いました。'];
-
   const [messagesList1, setMessagesList1] = useState<string[]>([]);
+  const [messagesList2, setMessagesList2] = useState<string[]>([]);
+  const [messagesList3, setMessagesList3] = useState<string[]>([]);
 
-  const fetchGPT = async () => {
-    // setMessagesList1(undefined);
-
-    const res = await apiClient.GPT.$get().catch(returnNull);
-
-    // if (res !== null) setMessagesList1(res);
+  const fetchTweet = async (message: string) => {
+    // const res = await apiClient.GPTTweet.$post({ message }).catch(returnNull);
+    console.log('aaa');
+    const res = await apiClient.GPTTweet.$post({ body: { message } }).catch(returnNull);
     if (res !== null) {
-      setMessagesList1((prevMessages) => [...prevMessages, ...res]);
+      console.log('fetchTweetが実行!');
+      return res;
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchGPT();
-    }, 50000);
+  const fetchGPTA = useCallback(async () => {
+    const res = await apiClient.GPTA.$get().catch(returnNull);
 
-    return () => clearInterval(interval);
+    if (res !== null) {
+      setMessagesList1((prevMessages) => {
+        const newMessages = [...prevMessages, ...res];
+        if (newMessages.length > prevMessages.length) {
+          console.log('nweMessages');
+          fetchTweet(newMessages[newMessages.length - 1]);
+        }
+        return newMessages;
+      });
+    }
   }, []);
 
-  const messagesList2 = ['FXを売りました。', 'FXを買いました。'];
-  const messagesList3 = [
-    'FXを買いました。',
-    'FXを売りました。',
-    'FXを売りました。',
-    'FXを買いました。',
-    'FXを買いました。',
-    'FXを売りました。',
-    'FXを売りました。',
-    'FXを買いました。',
-    'FXを買いました。',
-    'FXを売りました。',
-    'FXを売りました。',
-    'FXを買いました。',
-  ];
-  // 将来このListをuseStateにしてバックエンドから情報を持ってきてListに入れる。
+  const fetchGPTB = async () => {
+    const res = await apiClient.GPTB.$get().catch(returnNull);
+
+    if (res !== null) {
+      setMessagesList2((prevMessages) => [...prevMessages, ...res]);
+    }
+  };
+
+  const fetchGPTC = async () => {
+    const res = await apiClient.GPTC.$get().catch(returnNull);
+
+    if (res !== null) {
+      setMessagesList3((prevMessages) => [...prevMessages, ...res]);
+    }
+  };
+
+  //GPTAの呼び出し＝50秒に１回
+  useEffect(() => {
+    const intervalA = setInterval(() => {
+      fetchGPTA();
+    }, 50000);
+
+    const intervalB = setInterval(() => {
+      fetchGPTB();
+    }, 80000);
+
+    const intervalC = setInterval(() => {
+      fetchGPTC();
+    }, 100000);
+
+    return () => {
+      clearInterval(intervalA);
+      clearInterval(intervalB);
+      clearInterval(intervalC);
+    };
+  }, [fetchGPTA]);
+
   // オセロのLINE画面と同じ仕組み
 
   return (
     <div className={styles.container}>
       {/* <ChatWindow name="A" messages={messagesList1 || []} /> */}
       <ChatWindow name="A" messages={messagesList1} />
-      {/* <ChatWindow name='A' {setTimeout(function (){
-        await fetchGPT()
-      }) messages = {messagesList1}}/> */}
       <ChatWindow name="B" messages={messagesList2} />
       <ChatWindow name="C" messages={messagesList3} />
     </div>

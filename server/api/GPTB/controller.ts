@@ -1,0 +1,6 @@
+import { gptUseCase } from '$/useCase/gptUseCase';
+import { defineController } from './$relay';
+
+export default defineController(() => ({
+  get: () => gptUseCase.fetchGPTB().then((GPT) => ({ status: 200, body: GPT })),
+}));

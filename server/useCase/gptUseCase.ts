@@ -1,20 +1,27 @@
 import { gptRepository } from '$/repository/gptRepository';
 
 export const gptUseCase = {
-  // fetchTrends: async () => {
-  //   const trends = await twitterRepository.fetchTrends();
+  fetchGPTA: async () => {
+    const GPTA = await gptRepository.fetchGPTA();
 
-  //   return trends;
-  // },
+    return GPTA;
+  },
 
-  // fetchTweet: async () => {
-  //   const tweet = await twitterRepository.fetchTweet();
+  fetchGPTB: async () => {
+    const GPTB = await gptRepository.fetchGPTB();
 
-  //   return tweet;
-  // },
-  fetchGPT: async () => {
-    const GPT = await gptRepository.fetchGPT();
+    return GPTB;
+  },
 
-    return GPT;
+  fetchGPTC: async () => {
+    const GPTC = await gptRepository.fetchGPTC();
+
+    return GPTC;
+  },
+
+  fetchGptTweet: async (message: string) => {
+    const tweet = await gptRepository.fetchGPTTweet(message);
+
+    return tweet;
   },
 };
