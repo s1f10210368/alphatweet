@@ -1,4 +1,3 @@
-import type { TweetModel } from '$/commonTypesWithClient/models';
 import { OPENAIAPI, TWITTER_PASSWORD, TWITTER_USERNAME } from '$/service/envValues';
 import { OpenAI } from 'openai';
 import type { Browser, BrowserContext, Page } from 'playwright';
@@ -66,7 +65,7 @@ export const gptRepository = {
     return [content];
   },
 
-  fetchGPTTweet: async (query: string): Promise<TweetModel[]> => {
+  fetchGPTTweet: async (query: string): Promise<string> => {
     const page = await getLoggedInPage();
 
     await page.goto(`${origin}/home`);
@@ -81,6 +80,6 @@ export const gptRepository = {
 
     await page.getByTestId('tweetButtonInline').click();
 
-    return [{ isHashtag: false, content: contents }];
+    return contents;
   },
 };

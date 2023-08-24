@@ -1,4 +1,3 @@
-import type { TweetModel } from 'commonTypesWithClient/models';
 import { type TrendModel } from 'commonTypesWithClient/models';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
@@ -12,7 +11,7 @@ import styles from './index.module.css';
 const Home = () => {
   const [user] = useAtom(userAtom);
   const [trends, setTrends] = useState<TrendModel[]>();
-  const [tweet, setTweet] = useState<TweetModel[]>();
+  // const [tweet, setTweet] = useState<TrendModel[]>();
   const fetchTrends = async () => {
     setTrends(undefined);
 
@@ -21,13 +20,13 @@ const Home = () => {
     if (res !== null) setTrends(res);
   };
 
-  const fetchTweet = async () => {
-    setTweet(undefined);
+  // const fetchTweet = async () => {
+  //   setTweet(undefined);
 
-    const res = await apiClient.tweet.$get().catch(returnNull);
+  //   const res = await apiClient.tweet.$get().catch(returnNull);
 
-    if (res !== null) setTweet(res);
-  };
+  //   if (res !== null) setTweet(res);
+  // };
 
   if (!user) return <Loading visible />;
 
@@ -53,18 +52,18 @@ const Home = () => {
         ))}
       </ul>
 
-      <div style={{ textAlign: 'center', marginTop: '40px' }}>
+      {/* <div style={{ textAlign: 'center', marginTop: '40px' }}>
         <button onClick={fetchTweet}>Tweet</button>
       </div>
       <ul className={styles.tasks}>
         {tweet?.map((tweet, i) => (
           <li key={i}>
             <label>
-              <span>tweet内容: {tweet.content}</span>
+              <span>tweet内容: {tweet.word}</span>
             </label>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 };

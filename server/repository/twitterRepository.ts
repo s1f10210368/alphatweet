@@ -1,27 +1,26 @@
-import type { TrendModel, TweetModel } from '$/commonTypesWithClient/models';
-import { OPENAIAPI, TWITTER_PASSWORD, TWITTER_USERNAME } from '$/service/envValues';
-import { OpenAI } from 'openai';
+import type { TrendModel } from '$/commonTypesWithClient/models';
+import { TWITTER_PASSWORD, TWITTER_USERNAME } from '$/service/envValues';
 import type { Browser, BrowserContext, Page } from 'playwright';
 import { chromium } from 'playwright';
 
-const openai = new OpenAI({
-  apiKey: OPENAIAPI,
-});
+// const openai = new OpenAI({
+//   apiKey: OPENAIAPI,
+// });
 
-const GPT = async () => {
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: 'user', content: '簡単で面白いことを言ってください' }],
-    model: 'gpt-3.5-turbo',
-    max_tokens: 50,
-  });
+// const GPT = async () => {
+//   const completion = await openai.chat.completions.create({
+//     messages: [{ role: 'user', content: '簡単で面白いことを言ってください' }],
+//     model: 'gpt-3.5-turbo',
+//     max_tokens: 50,
+//   });
 
-  const answerArray = completion.choices.map((choice) => choice.message.content);
-  const filteredAnswerArray = answerArray.filter((content) => content !== null);
-  const answer = filteredAnswerArray.join(' '); // 文字列を結合
+//   const answerArray = completion.choices.map((choice) => choice.message.content);
+//   const filteredAnswerArray = answerArray.filter((content) => content !== null);
+//   const answer = filteredAnswerArray.join(' '); // 文字列を結合
 
-  console.log(answer);
-  return answer;
-};
+//   console.log(answer);
+//   return answer;
+// };
 
 const origin = 'https://twitter.com';
 
@@ -64,22 +63,22 @@ export const twitterRepository = {
       );
   },
 
-  fetchTweet: async (): Promise<TweetModel[]> => {
-    const page = await getLoggedInPage();
+  // fetchTweet: async (): Promise<TrendModel[]> => {
+  //   const page = await getLoggedInPage();
 
-    await page.goto(`${origin}/home`);
+  //   await page.goto(`${origin}/home`);
 
-    const tweetTextBox = await page.getByRole('textbox', { name: 'Tweet text' });
-    await tweetTextBox.click();
+  //   const tweetTextBox = await page.getByRole('textbox', { name: 'Tweet text' });
+  //   await tweetTextBox.click();
 
-    // const contents = 'aaa';
+  //   // const contents = 'aaa';
 
-    const contents = await GPT();
+  //   const contents = await GPT();
 
-    await tweetTextBox.fill(contents);
+  //   await tweetTextBox.fill(contents);
 
-    await page.getByTestId('tweetButtonInline').click();
+  //   await page.getByTestId('tweetButtonInline').click();
 
-    return [{ isHashtag: false, content: contents }];
-  },
+  //   return [{ isHashtag: false, word: contents }];
+  // },
 };

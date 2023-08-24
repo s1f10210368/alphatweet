@@ -19,14 +19,7 @@ export type TrendModel = {
   word: string;
 };
 
-export type TweetModel = {
-  isHashtag: boolean;
-  content: string;
-};
-
-// export type Methods = DefineMethods<{
-//   post: {
-//     reqBody: { message: string };
-//     resBody: TweetModel[];
-//   };
-// }>;
+// export type TweetModel = {
+//   isHashtag: boolean;
+//   content: string;
+// };
