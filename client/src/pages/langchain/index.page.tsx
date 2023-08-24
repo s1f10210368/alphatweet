@@ -51,6 +51,7 @@ const LangChain = () => {
     }
   };
 
+  //GTPAだけツイート処理
   const fetchGPTA = useCallback(async () => {
     const res = await apiClient.GPTA.$get().catch(returnNull);
 
