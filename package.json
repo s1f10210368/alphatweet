@@ -44,6 +44,8 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "openai": "^4.1.0"
+    "axios": "^1.4.0",
+    "langchain": "^0.0.134",
+    "openai": "^4.2.0"
   }
 }
